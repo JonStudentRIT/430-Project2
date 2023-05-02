@@ -316,3 +316,8 @@ h3.postAge {
     grid-row: 1;
     grid-column: 7;
 }
+#chatItem
+{
+    display: block;
+    background-color: blue;
+}

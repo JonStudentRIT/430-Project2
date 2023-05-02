@@ -21,6 +21,11 @@ const handleEditBox = () => {
                 channel: channelSelect.value,
             };
 
+            const name = localUser;
+            const postOut = editBox.value;
+            const channel = channelSelect.value;
+            helper.sendPost(e.target.action, {name, channel, postOut}, loadPostsFromServer);
+
             socket.emit('chat message', data);
             editBox.value = '';
         }
@@ -31,7 +36,7 @@ const displayMessage = (msg) => {
     const messageDiv = document.createElement('div');
     console.log(msg);
     localTemp = msg.split(',');
-    messageDiv.innerHTML = `<h1>${localTemp[0]}</h1><p>${localTemp[1]}</p>`;
+    messageDiv.innerHTML = `<div id="chatitem"><h1>${localTemp[0]}</h1><p>${localTemp[1]}</p></div>`;
     document.getElementById('messages').appendChild(messageDiv);
 }
 
@@ -42,13 +47,21 @@ const handleChannelSelect = () => {
         messages.innerHTML = '';
 
         switch(channelSelect.value) {
-            case 'memes':
-                socket.off('general');
-                socket.on('memes', displayMessage);
+            case 'friends':
+                socket.off('public');
+                socket.off('personal');
+                socket.on('friends', displayMessage);
+                break;
+        // everything in ublic is visible in both friends an public  
+            case 'public':
+                socket.off('personal');
+                socket.off('friends');
+                socket.on('public', displayMessage);
                 break;
             default:
-                socket.off('memes');
-                socket.on('general', displayMessage);
+                socket.off('public');
+                socket.off('friends');
+                socket.on('personal', displayMessage);
                 break;
         }
     });

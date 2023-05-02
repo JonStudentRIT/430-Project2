@@ -21,6 +21,11 @@ const PostOutSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  channel:{
+    type: String,
+    required: true,
+    trim: true,
+  },
   owner: {
     type: mongoose.Schema.ObjectId,
     required: true,

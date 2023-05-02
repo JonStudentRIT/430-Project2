@@ -17,13 +17,14 @@ const getPosts = async (req, res) => {
 };
 
 const makePost = async (req, res) => {
-  if (!req.body.name || !req.body.postOut) {
+  if (!req.body.name || !req.body.channel || !req.body.postOut) {
     return res.status(400).json({ error: 'Please Fill out all fields' });
   }
 
   const postOutData = {
     name: req.body.name,
     postOut: req.body.postOut,
+    channel: req.body.channel,
     index: '',
     owner: req.session.account._id,
   };
