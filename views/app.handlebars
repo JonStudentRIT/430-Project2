@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>DomoMaker</title>
+  <title>Project 2</title>
   <link rel="shortcut icon" href="/assets/img/favicon.png"/>
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
@@ -10,17 +10,17 @@
     <div class="navlink"><a href="/logout">Log out</a></div>
   </nav>
 
-  <section id="makeDomo">
+  <section id="makePost">
 
   </section>
-  <section id="domos">
+  <section id="posts">
     
   </section>
 
-  <div id="domoMessage" class='hidden'>
+  <div id="postMessage" class='hidden'>
     <img id="speech" src="/assets/img/speech.png" alt="speech box"/>
     <h3><span id="errorMessage"></span></h3>
-    <img id="domo" src="assets/img/domo.png" alt="domo"/>
+    <img id="post" src="assets/img/domo.png" alt=""/>
   </div>
   
   <form id="editForm">
@@ -33,6 +33,71 @@
   </form>
 
   <div id="messages"></div>
+  <form action="layout">
+    <section id="logout">
+      <p>
+        Log Out
+      </p>
+    </section>
+    <section id="selected">
+      <p>
+        Whats New
+      </p>
+    </section>
+    <section id="trending">
+      <p>
+        Trending
+      </p>
+    </section>
+    <section id="channelList">
+      <button id="Home">
+        Home
+      </button>
+      <button id="Explore">
+        Explore
+      </button>
+      <button id="Notifications">
+        Notifications
+      </button>
+    </section>
+    <section id="channelAd">
+      <img src="" alt="Advertisement">
+    </section>
+    <section id="post">
+      <img src="" alt="userImage">
+      <p>
+        username
+      </p>
+      <input type="textbox">
+      <img src="" alt="Posted image">
+      <button id="Send Post">Send Post</button>
+    </section>
+    <section id="otherPosts">
+      <img src="" alt="userImage">
+      <p>
+        username
+      </p>
+      <p>
+        Post text
+      </p>
+      <img src="" alt="Posted image">
+      <button id="Like">Like</button>
+    </section>
+    <section id="TopPost">
+      <img src="" alt="userImage">
+      <p>
+        username
+      </p>
+      <p>
+        Post text
+      </p>
+      <img src="" alt="Posted image">
+      <button id="Like">Like</button>
+    </section>
+    <section id="TopPostAd">
+      <img src="" alt="Advertisement">
+    </section>
+  </form>
    <script src="/socket.io/socket.io.js"></script>
   <script src="/assets/appBundle.js"></script>
 </body>

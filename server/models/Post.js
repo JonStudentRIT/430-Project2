@@ -4,7 +4,7 @@ const _ = require('underscore');
 const setName = (name) => _.escape(name).trim();
 const setBackstory = (backstory) => _.escape(backstory).trim();
 
-const DomoSchema = new mongoose.Schema({
+const PostSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -16,7 +16,7 @@ const DomoSchema = new mongoose.Schema({
     min: 0,
     required: true,
   },
-  // added atribute for expansion of the domo
+  // added atribute for expansion
   backstory: {
     type: String,
     required: true,
@@ -39,11 +39,11 @@ const DomoSchema = new mongoose.Schema({
   },
 });
 
-DomoSchema.statics.toAPI = (doc) => ({
+PostSchema.statics.toAPI = (doc) => ({
   name: doc.name,
   age: doc.age,
   backstory: doc.backstory,
 });
 
-const DomoModel = mongoose.model('Domo', DomoSchema);
-module.exports = DomoModel;
+const PostModel = mongoose.model('Post', PostSchema);
+module.exports = PostModel;

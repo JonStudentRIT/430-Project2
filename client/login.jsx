@@ -14,6 +14,10 @@ const handleLogin = (e) => {
         return false;
     }
 
+    console.log(username);
+
+    window.localStorage.setItem("jk9927-UserName", username);
+
     helper.sendPost(e.target.action, {username, pass});
 
     return false;

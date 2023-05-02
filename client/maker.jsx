@@ -3,6 +3,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 
 let id;
+let localUser = "";
 //------------
 const socket = io();
 
@@ -16,7 +17,7 @@ const handleEditBox = () => {
 
         if(editBox.value) {            
             const data = {
-                message: `${editBox.value}`,
+                message: `${localUser},${editBox.value}`,
                 channel: channelSelect.value,
             };
 
@@ -28,7 +29,9 @@ const handleEditBox = () => {
 
 const displayMessage = (msg) => {    
     const messageDiv = document.createElement('div');
-    messageDiv.innerHTML = `<h1>${msg}</h1> <p>${msg}</p>`;
+    console.log(msg);
+    localTemp = msg.split(',');
+    messageDiv.innerHTML = `<h1>${localTemp[0]}</h1><br><p>${localTemp[1]}</p>`;
     document.getElementById('messages').appendChild(messageDiv);
 }
 
@@ -52,13 +55,13 @@ const handleChannelSelect = () => {
 }
 //------------
 
-const handleDomo = (e) => {
+const handlePost = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#domoName').value;
-    const age = e.target.querySelector('#domoAge').value;
-    const backstory = e.target.querySelector('#domoBackstory').value;
+    const name = e.target.querySelector('#postName').value;
+    const age = e.target.querySelector('#postAge').value;
+    const backstory = e.target.querySelector('#postBackstory').value;
 
     if(!name || !age || !backstory)
     {
@@ -66,105 +69,103 @@ const handleDomo = (e) => {
         return false;
     }
 
-    helper.sendPost(e.target.action, {name, age, backstory}, loadDomosFromServer);
+    helper.sendPost(e.target.action, {name, age, backstory}, loadPostsFromServer);
 
     return false;
 };
 
 // delete function 
-const deleteDomo = (e) => {
+const deletePost = (e) => {
     e.preventDefault();
     helper.hideError();
 
     // empty string check
     if(id) {
         // go to the helper to send an update 
-        helper.sendDelete(e.target.action, {id}, loadDomosFromServer);
+        helper.sendDelete(e.target.action, {id}, loadPostsFromServer);
     }
 
     return false;
   };
 
-const DomoForm = (props) => {
+const PostForm = (props) => {
     return (
-        <form id = "domoForm"
-            onSubmit = {handleDomo}
-            name = "domoForm"
+        <form id = "postForm"
+            onSubmit = {handlePost}
+            name = "postForm"
             action = "/maker"
             method = "POST"
-            className = "domoForm"
+            className = "postForm"
             >
-                <lable id = "domoNameLabel" htmlFor = "name">Name: </lable>
-                <input id = "domoName" type="text" name = "name" placeholder = "Domo Name" />
+                <lable id = "postNameLabel" htmlFor = "name">Name: </lable>
+                <input id = "postName" type="text" name = "name" placeholder = "post Name" />
                 <br />
-                <label id ='domoAgeLabel' htmlFor = "age">Age: </label>
-                <input id = "domoAge" type="number" min = "0" name = "age" />
+                <label id ='postAgeLabel' htmlFor = "age">Age: </label>
+                <input id = "postAge" type="number" min = "0" name = "age" />
                 <br />
-                {/*adds larger field for more explanation about the domo pt1 */}
-                <lable id = "domoBackstoryLabel" htmlFor = "backstory">Backstory: </lable>
-                <textarea id = "domoBackstory" rows="6" cols="30"  name = "backstory" >
-                    Tell the story of your Domo
+                <lable id = "postBackstoryLabel" htmlFor = "backstory">Backstory: </lable>
+                <textarea id = "postBackstory" rows="6" cols="30"  name = "backstory" >
+                    Tell the story of your Post
                 </textarea>
                 <br />
-                <input id = "submitButton" className = "makeDomoSubmit" type="submit" value = "Make Domo" />
+                <input id = "submitButton" className = "makeDomoSubmit" type="submit" value = "Make Post" />
             </form>
     );
 };
 
-const DomoList = (props) => {
-    if(props.domos.length === 0) {
+const PostList = (props) => {
+    if(props.posts.length === 0) {
         return (
             <div className = "domoList">
-                <h3 className = "emptyDomo">No Domos Yet!</h3>
+                <h3 className = "emptyDomo">No Posts Yet!</h3>
             </div>
         )
     };
-    const domoNodes = props.domos.map(domo => {
+    const postNodes = props.posts.map(post => {
         return (
-            <div key = {domo._id} className = "domo">
+            <div key = {post._id} className = "domo">
                 <div>
-                    <img src = "/assets/img/domoface.jpeg" alt = "domo face" className = "domoFace" />
-                    <h3 className = "domoName">Name: {domo.name} </h3>
-                    <h3 className = "domoAge">Age: {domo.age} </h3>
+                    <img src = "/assets/img/domoface.jpeg" alt = "face" className = "domoFace" />
+                    <h3 className = "postName">Name: {post.name} </h3>
+                    <h3 className = "postAge">Age: {post.age} </h3>
                 </div>
-                {/* description of the domo is seperate from the name and age */}
+
                 <div>
-                    <h3 className = "domoBackstory">Backstory: {domo.backstory}</h3>
+                    <h3 className = "postBackstory">Backstory: {post.backstory}</h3>
                 </div>
                 <div>
-                {/* add a button to delete a domo */}
+
                 <form
                     // call the delete function
-                    onSubmit = {deleteDomo}
+                    onSubmit = {deletePost}
                     action = "/delete"
                     >
-                        {/* _id and the index of the domo thats diplayed need to match */}
-                        {/* this is where the domo _id is collected for the comparison in deleteOne() from controllers */}
-                        <input id = "submitButton" onClick = {()=>{id=domo._id}} type="submit" value = "Delete" />
+                        <input id = "submitButton" onClick = {()=>{id=post._id}} type="submit" value = "Delete" />
                     </form>
                 </div>
             </div>
         );
     });
     return (
-        <div className = "domoList">{domoNodes}</div>
+        <div className = "domoList">{postNodes}</div>
     )
 };
 
-const loadDomosFromServer = async () => {
-    const response = await fetch('/getDomos');
+const loadPostsFromServer = async () => {
+    const response = await fetch('/getPosts');
     const data = await response.json();
-    ReactDOM.render(<DomoList domos = {data.domos} />, document.getElementById('domos'));
+    ReactDOM.render(<PostList posts = {data.posts} />, document.getElementById('posts'));
 };
 
 const init = () => {
-    ReactDOM.render(<DomoForm />, document.getElementById('makeDomo'));
-    ReactDOM.render(<DomoList domos = {[]} />, document.getElementById('domos'));
-    loadDomosFromServer();
+    ReactDOM.render(<PostForm />, document.getElementById('makePost'));
+    ReactDOM.render(<PostList posts = {[]} />, document.getElementById('posts'));
+    loadPostsFromServer();
     //---------
     handleEditBox();
     socket.on('general', displayMessage);
     handleChannelSelect();
+    localUser = window.localStorage.getItem("jk9927-UserName")
     //---------
 };
 
