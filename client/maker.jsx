@@ -31,7 +31,7 @@ const displayMessage = (msg) => {
     const messageDiv = document.createElement('div');
     console.log(msg);
     localTemp = msg.split(',');
-    messageDiv.innerHTML = `<h1>${localTemp[0]}</h1><br><p>${localTemp[1]}</p>`;
+    messageDiv.innerHTML = `<h1>${localTemp[0]}</h1><p>${localTemp[1]}</p>`;
     document.getElementById('messages').appendChild(messageDiv);
 }
 
@@ -59,36 +59,36 @@ const handlePost = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#postName').value;
-    const age = e.target.querySelector('#postAge').value;
-    const backstory = e.target.querySelector('#postBackstory').value;
+    const name = localUser;
+    const postOut = e.target.querySelector('#postBackstory').value;
 
-    if(!name || !age || !backstory)
+    if(!name || !postOut)
     {
         helper.handleError('All fields are required');
         return false;
     }
+    console.log("point 1");
 
-    helper.sendPost(e.target.action, {name, age, backstory}, loadPostsFromServer);
+    helper.sendPost(e.target.action, {name, postOut}, loadPostsFromServer);
 
     return false;
 };
 
-// delete function 
-const deletePost = (e) => {
-    e.preventDefault();
-    helper.hideError();
+// // delete function 
+// const deletePost = (e) => {
+//     e.preventDefault();
+//     helper.hideError();
 
-    // empty string check
-    if(id) {
-        // go to the helper to send an update 
-        helper.sendDelete(e.target.action, {id}, loadPostsFromServer);
-    }
+//     // empty string check
+//     if(id) {
+//         // go to the helper to send an update 
+//         helper.sendDelete(e.target.action, {id}, loadPostsFromServer);
+//     }
 
-    return false;
-  };
+//     return false;
+//   };
 
-const PostForm = (props) => {
+const PostOutForm = (props) => {
     return (
         <form id = "postForm"
             onSubmit = {handlePost}
@@ -97,44 +97,40 @@ const PostForm = (props) => {
             method = "POST"
             className = "postForm"
             >
-                <lable id = "postNameLabel" htmlFor = "name">Name: </lable>
+                {/* <lable id = "postNameLabel" htmlFor = "name">Name: </lable>
                 <input id = "postName" type="text" name = "name" placeholder = "post Name" />
-                <br />
-                <label id ='postAgeLabel' htmlFor = "age">Age: </label>
-                <input id = "postAge" type="number" min = "0" name = "age" />
-                <br />
-                <lable id = "postBackstoryLabel" htmlFor = "backstory">Backstory: </lable>
-                <textarea id = "postBackstory" rows="6" cols="30"  name = "backstory" >
-                    Tell the story of your Post
+                <br /> */}
+                {/* <lable id = "postBackstoryLabel" htmlFor = "backstory">Backstory: </lable> */}
+                <textarea id = "postBackstory" rows="6" cols="30"  name = "postOut" >
+                    Tell us your story
                 </textarea>
                 <br />
-                <input id = "submitButton" className = "makeDomoSubmit" type="submit" value = "Make Post" />
+                <input id = "submitButton" className = "makePostSubmit" type="submit" value = "Make Post" />
             </form>
     );
 };
 
-const PostList = (props) => {
+const PostOutList = (props) => {
     if(props.posts.length === 0) {
         return (
-            <div className = "domoList">
-                <h3 className = "emptyDomo">No Posts Yet!</h3>
+            <div className = "postList">
+                <h3 className = "emptyPost">No Posts Yet!</h3>
             </div>
         )
     };
     const postNodes = props.posts.map(post => {
+        console.log(post);
         return (
-            <div key = {post._id} className = "domo">
+            <div key = {post._id} className = "post">
                 <div>
-                    <img src = "/assets/img/domoface.jpeg" alt = "face" className = "domoFace" />
+                    <img src = "/assets/img/placeHold2.jpeg" alt = "face" className = "postFace" />
                     <h3 className = "postName">Name: {post.name} </h3>
-                    <h3 className = "postAge">Age: {post.age} </h3>
                 </div>
 
                 <div>
-                    <h3 className = "postBackstory">Backstory: {post.backstory}</h3>
+                    <h3 className = "postBackstory">text{post.postOut}</h3>
                 </div>
-                <div>
-
+                {/* <div>
                 <form
                     // call the delete function
                     onSubmit = {deletePost}
@@ -142,24 +138,24 @@ const PostList = (props) => {
                     >
                         <input id = "submitButton" onClick = {()=>{id=post._id}} type="submit" value = "Delete" />
                     </form>
-                </div>
+                </div> */}
             </div>
         );
     });
     return (
-        <div className = "domoList">{postNodes}</div>
+        <div className = "postList">{postNodes}</div>
     )
 };
 
 const loadPostsFromServer = async () => {
     const response = await fetch('/getPosts');
     const data = await response.json();
-    ReactDOM.render(<PostList posts = {data.posts} />, document.getElementById('posts'));
+    ReactDOM.render(<PostOutList posts = {data.posts} />, document.getElementById('posts'));
 };
 
 const init = () => {
-    ReactDOM.render(<PostForm />, document.getElementById('makePost'));
-    ReactDOM.render(<PostList posts = {[]} />, document.getElementById('posts'));
+    ReactDOM.render(<PostOutForm />, document.getElementById('makePost'));
+    ReactDOM.render(<PostOutList posts = {[]} />, document.getElementById('posts'));
     loadPostsFromServer();
     //---------
     handleEditBox();

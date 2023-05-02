@@ -2,28 +2,21 @@ const mongoose = require('mongoose');
 const _ = require('underscore');
 
 const setName = (name) => _.escape(name).trim();
-const setBackstory = (backstory) => _.escape(backstory).trim();
+const setPost = (postOut) => _.escape(postOut).trim();
 
-const PostSchema = new mongoose.Schema({
+const PostOutSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     trim: true,
     set: setName,
   },
-  age: {
-    type: Number,
-    min: 0,
-    required: true,
-  },
-  // added atribute for expansion
-  backstory: {
+  postOut: {
     type: String,
     required: true,
     trim: true,
-    set: setBackstory,
+    set: setPost,
   },
-  // extra added atribute for managing the delete function
   index: {
     type: String,
     required: true,
@@ -39,11 +32,10 @@ const PostSchema = new mongoose.Schema({
   },
 });
 
-PostSchema.statics.toAPI = (doc) => ({
+PostOutSchema.statics.toAPI = (doc) => ({
   name: doc.name,
-  age: doc.age,
-  backstory: doc.backstory,
+  postOut: doc.postOut,
 });
 
-const PostModel = mongoose.model('Post', PostSchema);
-module.exports = PostModel;
+const PostOutModel = mongoose.model('PostOut', PostOutSchema);
+module.exports = PostOutModel;
