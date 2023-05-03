@@ -9,22 +9,9 @@
   <nav><a href="/login"><img id="logo" src="/assets/img/placeHold3.png" alt="face logo"/></a>
     <div class="navlink"><a href="/logout">Log out</a></div>
   </nav>
-
-  <section id="makePost">
-
-  </section>
-  <section id="posts">
-    
-  </section>
-
-  <div id="postMessage" class='hidden'>
-    <img id="speech" src="/assets/img/placeHold5.png" alt="speech box"/>
-    <h3><span id="errorMessage"></span></h3>
-    <img id="post" src="assets/img/placeHold1.png" alt=""/>
-  </div>
   
-  <form id="editForm">
-    <input id="editBox" type="text" />    
+  <form id="postForm">
+    <input id="postBox" type="text" />
     <select name="channel" id="channelSelect">
       <option value="public">Public</option>
       <option value="friends">Friends</option>
@@ -33,7 +20,9 @@
     <input type="submit" />
   </form>
 
-  <div id="messages"></div>
+  <section id="posts">
+      
+  </section>
 
    <script src="/socket.io/socket.io.js"></script>
   <script src="/assets/appBundle.js"></script>

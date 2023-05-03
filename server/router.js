@@ -9,12 +9,12 @@ const router = (app) => {
 
   app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
 
+  // app.post('/changePassword', mid.requiresSecure, mid.requiresLogout, controllers.Account.changePassword);
+
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
   app.get('/maker', mid.requiresLogin, controllers.PostOut.makerPage);
   app.post('/maker', mid.requiresLogin, controllers.PostOut.makePost);
-  // /delete sends the id to the controller
-  // app.post('/delete', mid.requiresLogin, controllers.PostOut.deletePost);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };

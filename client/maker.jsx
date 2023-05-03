@@ -2,32 +2,31 @@ const helper = require('./helper.js');
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-let id;
 let localUser = "";
 //------------
 const socket = io();
 
-const handleEditBox = () => {
-    const editForm = document.getElementById('editForm');
-    const editBox = document.getElementById('editBox');
+const handlePostBox = () => {
+    // const postForm = document.getElementById('postForm');
+    const postBox = document.getElementById('postBox');
     const channelSelect = document.getElementById('channelSelect');
 
     editForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        if(editBox.value) {            
+        if(postBox.value) {            
             const data = {
-                message: `${localUser},${editBox.value}`,
+                message: `${localUser},${postBox.value}`,
                 channel: channelSelect.value,
             };
 
             const name = localUser;
-            const postOut = editBox.value;
+            const postOut = postBox.value;
             const channel = channelSelect.value;
+            
+            //socket.emit('chat message', data);
             helper.sendPost(e.target.action, {name, channel, postOut}, loadPostsFromServer);
-
-            socket.emit('chat message', data);
-            editBox.value = '';
+            postBox.value = '';
         }
     });
 };
@@ -42,9 +41,9 @@ const displayMessage = (msg) => {
 
 const handleChannelSelect = () => {
     const channelSelect = document.getElementById('channelSelect');
-    const messages = document.getElementById('messages');
+    // const messages = document.getElementById('messages');
     channelSelect.addEventListener('change', () => {
-        messages.innerHTML = '';
+        loadPostsFromServer();
 
         switch(channelSelect.value) {
             case 'friends':
@@ -52,7 +51,6 @@ const handleChannelSelect = () => {
                 socket.off('personal');
                 socket.on('friends', displayMessage);
                 break;
-        // everything in ublic is visible in both friends an public  
             case 'public':
                 socket.off('personal');
                 socket.off('friends');
@@ -67,62 +65,6 @@ const handleChannelSelect = () => {
     });
 }
 //------------
-
-const handlePost = (e) => {
-    e.preventDefault();
-    helper.hideError();
-
-    const name = localUser;
-    const postOut = e.target.querySelector('#postBackstory').value;
-
-    if(!name || !postOut)
-    {
-        helper.handleError('All fields are required');
-        return false;
-    }
-    console.log("point 1");
-
-    helper.sendPost(e.target.action, {name, postOut}, loadPostsFromServer);
-
-    return false;
-};
-
-// // delete function 
-// const deletePost = (e) => {
-//     e.preventDefault();
-//     helper.hideError();
-
-//     // empty string check
-//     if(id) {
-//         // go to the helper to send an update 
-//         helper.sendDelete(e.target.action, {id}, loadPostsFromServer);
-//     }
-
-//     return false;
-//   };
-
-const PostOutForm = (props) => {
-    return (
-        <form id = "postForm"
-            onSubmit = {handlePost}
-            name = "postForm"
-            action = "/maker"
-            method = "POST"
-            className = "postForm"
-            >
-                {/* <lable id = "postNameLabel" htmlFor = "name">Name: </lable>
-                <input id = "postName" type="text" name = "name" placeholder = "post Name" />
-                <br /> */}
-                {/* <lable id = "postBackstoryLabel" htmlFor = "backstory">Backstory: </lable> */}
-                <textarea id = "postBackstory" rows="6" cols="30"  name = "postOut" >
-                    Tell us your story
-                </textarea>
-                <br />
-                <input id = "submitButton" className = "makePostSubmit" type="submit" value = "Make Post" />
-            </form>
-    );
-};
-
 const PostOutList = (props) => {
     if(props.posts.length === 0) {
         return (
@@ -143,15 +85,6 @@ const PostOutList = (props) => {
                 <div>
                     <h3 className = "postBackstory">text{post.postOut}</h3>
                 </div>
-                {/* <div>
-                <form
-                    // call the delete function
-                    onSubmit = {deletePost}
-                    action = "/delete"
-                    >
-                        <input id = "submitButton" onClick = {()=>{id=post._id}} type="submit" value = "Delete" />
-                    </form>
-                </div> */}
             </div>
         );
     });
@@ -167,11 +100,11 @@ const loadPostsFromServer = async () => {
 };
 
 const init = () => {
-    ReactDOM.render(<PostOutForm />, document.getElementById('makePost'));
+    // ReactDOM.render(<PostOutForm />, document.getElementById('makePost'));
     ReactDOM.render(<PostOutList posts = {[]} />, document.getElementById('posts'));
     loadPostsFromServer();
     //---------
-    handleEditBox();
+    handlePostBox();
     socket.on('general', displayMessage);
     handleChannelSelect();
     localUser = window.localStorage.getItem("jk9927-UserName")

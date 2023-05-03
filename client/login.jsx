@@ -48,6 +48,24 @@ const handleSignup = (e) => {
     return false;
 }
 
+// const handleChange = (e) => {
+//     e.preventDefault();
+//     helper.hideError();
+
+//     const username = e.target.querySelector('#user').value;
+//     const pass = e.target.querySelector('#pass').value;
+
+//     if(!username || !pass)
+//     {
+//         helper.handleError('All fields are required!');
+//         return false;
+//     }
+
+//     helper.sendPost(e.target.action, {username, pass, pass2});
+
+//     return false;
+// }
+
 const LoginWindow = (props) => {
     return (
         <form id = "loginForm"
@@ -86,9 +104,27 @@ const SignupWindow = (props) => {
     )
 }
 
+// const changePassword = (props) => {
+//     return (
+//         <form id = "changePasswordForm"
+//             name = "changePasswordForm"
+//             onSubmit = {handleChange}
+//             action = "/changePassword"
+//             method = "POST"
+//             className = "mainForm"
+//             >
+//                 <label htmlFor = "username">Username: </label>
+//                 <input id = "user" type = "text" name = "username" placeholder = "username" />
+//                 <label htmlFor = "pass">New Password: </label>
+//                 <input id = "pass" type = "password" name = "pass" placeholder = "new password" />
+//             </form>
+//     )
+// }
+
 const init = () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
+    // const changePassword = document.getElementById('ChangePassword');
 
     loginButton.addEventListener('click', (e) => {
         e.preventDefault();
@@ -101,6 +137,12 @@ const init = () => {
         ReactDOM.render(<SignupWindow />, document.getElementById('content'));
         return false;
     });
+
+    // changePassword.addEventListener('click', (e) => {
+    //     e.preventDefault();
+    //     ReactDOM.render(<changePassword />, document.getElementById('content'));
+    //     return false;
+    // });
     ReactDOM.render(<LoginWindow />, document.getElementById('content'));
 }
 

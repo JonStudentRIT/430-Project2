@@ -55,6 +55,11 @@ const signup = async (req, res) => {
   }
 };
 
+// const changePassword = async (req, res) => {
+//   const username = `${req.body.username}`;
+//   const pass = `${req.body.pass}`;
+// }
+
 module.exports = {
   loginPage,
   login,
