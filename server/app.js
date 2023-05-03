@@ -13,10 +13,13 @@ const redis = require('redis');
 
 const router = require('./router.js');
 
+// socket setup
 const socketSetup = require('./io.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+// mongo setup 
+// key: Project2, collections: accounts, posts
 const dbURI = process.env.MONGODB_URI || 'mongodb+srv://jk9927:S4mVxyzHm9LqpJdU@cluster0.mcyfvky.mongodb.net/Project2?retryWrites=true&w=majority';
 mongoose.connect(dbURI).catch((err) => {
   if (err) {
@@ -30,10 +33,11 @@ const redisClient = redis.createClient({
 
 redisClient.on('error', (err) => console.log('Redis Client Error', err));
 
+// express setup
 const app = express();
 
+// redis setup
 redisClient.connect().then(() => {
-  //const app = express();
 
   app.use(helmet());
   app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
@@ -42,30 +46,28 @@ redisClient.connect().then(() => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
+  // session management
   app.use(session({
     key: 'sessionid',
     store: new RedisStore({
       client: redisClient,
     }),
-    secret: 'Posting app', // mr roboto
+    secret: 'Posting app',
     resave: false,
     saveUninitialized: false,
   }));
 
+  // handelbar setup
   app.engine('handlebars', expressHandlebars.engine({ defaultLayout: '' }));
   app.set('view engine', 'handlebars');
   app.set('views', `${__dirname}/../views`);
 
   router(app);
 
-  // app.listen(port, (err) => {
-  //   if (err) { throw err; }
-  //   console.log(`Listening on port ${port}`);
-  // });
 });
+// server is connected to express
 const server = socketSetup(app);
-
-// Then we start the server
+// server started here
 server.listen(port, (err) => {
   if (err) {
     throw err;

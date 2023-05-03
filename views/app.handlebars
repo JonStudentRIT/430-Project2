@@ -10,7 +10,8 @@
     <div class="navlink"><a href="/logout">Log out</a></div>
   </nav>
   
-  <form id="postForm">
+  {{!-- imput to the socket --}}
+  <form id="postForm" style="margin: 0 40%";>
     <input id="postBox" type="text" />
     <select name="channel" id="channelSelect">
       <option value="public">Public</option>
@@ -19,10 +20,20 @@
     </select>
     <input type="submit" />
   </form>
-
-  <section id="posts">
-      
-  </section>
+  {{!-- lower display is aligned as "ad | post list | ad" --}}
+  <div id="lowerDisplay">
+    <div id="adLeft">
+      <img src="/assets/img/addPlaceHold.png" alt="">
+      <img src="/assets/img/addPlaceHold.png" alt="">
+    </div>
+    <div id="adRight">
+      <img src="/assets/img/addPlaceHold.png" alt="">
+      <img src="/assets/img/addPlaceHold.png" alt="">
+    </div>
+    <section id="posts">
+      <section id="messages"></section>
+    </section>
+  </div>
 
    <script src="/socket.io/socket.io.js"></script>
   <script src="/assets/appBundle.js"></script>
