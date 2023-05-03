@@ -2,12 +2,15 @@
 const models = require('../models');
 const { db } = require('../models/PostOut');
 
+console.log(db);
 const { PostOut } = models;
 
 const makerPage = async (req, res) => res.render('app');
 
-// retrieve all postsand availability will be divided up into channels 
-// public: available to eveyone, private: only the user, friends, everyone who can access the friends channel
+// retrieve all postsand availability will be divided up into channels
+// public: available to eveyone
+// private: only the user
+// friends: everyone who can access the friends channel
 const getPosts = async (req, res) => {
   try {
     const query = { owner: req.session.account._id };
@@ -26,11 +29,11 @@ const makePost = async (req, res) => {
   }
 
   const postOutData = {
-    // current user creating the post
+    // current user creating the post : this is pulled from the accout name
     name: req.body.name,
-    // content of the post
+    // content of the post :  this is the text box contents
     postOut: req.body.postOut,
-    // the channel the post will be available on
+    // the channel the post will be available on : this is pulled from the client channel selected
     channel: req.body.channel,
     // the id of the post in mongo
     index: '',
@@ -39,7 +42,7 @@ const makePost = async (req, res) => {
   };
 
   try {
-    //create the post
+    // create the post
     const newPostOut = new PostOut(postOutData);
     // assign the index to the _id value
     newPostOut.index = newPostOut._id;

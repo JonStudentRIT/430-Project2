@@ -18,7 +18,7 @@ const socketSetup = require('./io.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-// mongo setup 
+// mongo setup
 // key: Project2, collections: accounts, posts
 const dbURI = process.env.MONGODB_URI || 'mongodb+srv://jk9927:S4mVxyzHm9LqpJdU@cluster0.mcyfvky.mongodb.net/Project2?retryWrites=true&w=majority';
 mongoose.connect(dbURI).catch((err) => {
@@ -38,7 +38,6 @@ const app = express();
 
 // redis setup
 redisClient.connect().then(() => {
-
   app.use(helmet());
   app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
   app.use(favicon(`${__dirname}/../hosted/img/placeHold4.png`));
@@ -63,7 +62,6 @@ redisClient.connect().then(() => {
   app.set('views', `${__dirname}/../views`);
 
   router(app);
-
 });
 // server is connected to express
 const server = socketSetup(app);

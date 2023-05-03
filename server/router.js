@@ -22,7 +22,7 @@ const router = (app) => {
   // home page
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 
-  // 404 if the user enters a url that dosnt exist socket will disconnect 
+  // 404 if the user enters a url that dosnt exist socket will disconnect
   // and then reconnect the user to the last page they were on
   app.get('/*', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };

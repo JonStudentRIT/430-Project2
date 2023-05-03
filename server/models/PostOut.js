@@ -25,7 +25,7 @@ const PostOutSchema = new mongoose.Schema({
     required: true,
   },
   // channel that the post can be seen on
-  channel:{
+  channel: {
     type: String,
     required: true,
     trim: true,

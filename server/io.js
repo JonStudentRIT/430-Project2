@@ -4,19 +4,18 @@ const { Server } = require('socket.io');
 let io;
 // information to output to mongo and the page
 const handleChatMessage = (msg) => {
-    io.emit(msg.channel, msg.message);
+  io.emit(msg.channel, msg.message);
 };
 // create the server
 const socketSetup = (app) => {
+  const server = http.createServer(app);
+  io = new Server(server);
 
-    const server = http.createServer(app);
-    io = new Server(server);
+  io.on('connection', (socket) => {
+    socket.on('post list', handleChatMessage);
+  });
 
-    io.on('connection', (socket) => {
-        socket.on('post list', handleChatMessage);
-    });
-
-    return server;
+  return server;
 };
 
 module.exports = socketSetup;
